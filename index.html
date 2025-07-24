@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>봉담중학교 1학년 6반 청소당번 뽑기</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .draw-button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .draw-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .draw-button:active {
+            transform: translateY(-1px);
+        }
+
+        .result-container {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .result-title {
+            color: #495057;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .selected-numbers {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .number-card {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            animation: slideIn 0.5s ease-out;
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message {
+            color: #6c757d;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .empty-message {
+            color: #adb5bd;
+            font-size: 1.1rem;
+        }
+
+        .drawing {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧹 봉담중학교 1학년 6반 청소당번 뽑기</h1>
+        <button class="draw-button" onclick="drawNumbers()">청소당번 뽑기!</button>
+        
+        <div class="result-container">
+            <div id="result-content">
+                <div class="empty-message">버튼을 클릭하여 청소당번을 뽑아보세요!</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function drawNumbers() {
+            const button = document.querySelector('.draw-button');
+            const resultContent = document.getElementById('result-content');
+            
+            // 버튼 애니메이션 시작
+            button.classList.add('drawing');
+            button.textContent = '뽑는 중...';
+            button.disabled = true;
+            
+            // 로딩 효과
+            resultContent.innerHTML = '<div class="empty-message">청소당번을 뽑고 있습니다...</div>';
+            
+            setTimeout(() => {
+                // 1부터 30까지의 숫자 배열 생성
+                const numbers = Array.from({length: 30}, (_, i) => i + 1);
+                
+                // 랜덤하게 5개 선택
+                const selectedNumbers = [];
+                for (let i = 0; i < 5; i++) {
+                    const randomIndex = Math.floor(Math.random() * numbers.length);
+                    selectedNumbers.push(numbers[randomIndex]);
+                    numbers.splice(randomIndex, 1);
+                }
+                
+                // 선택된 숫자를 오름차순으로 정렬
+                selectedNumbers.sort((a, b) => a - b);
+                
+                // 결과 표시
+                displayResult(selectedNumbers);
+                
+                // 버튼 상태 복원
+                button.classList.remove('drawing');
+                button.textContent = '다시 뽑기';
+                button.disabled = false;
+            }, 1500);
+        }
+        
+        function displayResult(numbers) {
+            const resultContent = document.getElementById('result-content');
+            
+            const numbersHtml = numbers.map((num, index) => 
+                `<div class="number-card" style="animation-delay: ${index * 0.1}s">${num}</div>`
+            ).join('');
+            
+            const resultHtml = `
+                <div class="result-title">🎉 선택된 청소당번</div>
+                <div class="selected-numbers">
+                    ${numbersHtml}
+                </div>
+                <div class="message">
+                    <strong>${numbers.join('번, ')}번</strong> 학생들이 선택되었습니다!<br>
+                    오늘 하루 수고해주세요! 💪
+                </div>
+            `;
+            
+            resultContent.innerHTML = resultHtml;
+        }
+    </script>
+</body>
+</html>
